@@ -1,0 +1,21 @@
+h1 {color: red;}
+div.sample{
+    text-align: center;
+    margin-left: 25%;
+    margin-right: 25%;
+}
+footer{
+position: fixed;
+bottom: 0;
+width: 100%;
+}
+.boutons{
+    margin-left: 45%;
+    margin-right: 45%;
+    }
+.auth{
+    width: 20%;
+}
+.homediv{
+    width: 80%;
+}

@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Add genre</h1>
+<form role="form" method ="POST" action ="{{ url_for('save_genre')}}">
+{{ form.hidden_tag() }}
+    {% if form.name.errors %}
+    <div class = "form-group has-error">
+    {% else %}
+    <div class = "form-group">
+    {% endif %}
+    {{ form.name.label }} {{ form.name(size =50,
+    class_="form-control") }}
+    </div>    
+    {%if form.name.errors %}
+    <ul class="list-group">
+        {% for error in form.name.errors %}
+        <li class="list-group-item list-group-item-danger">
+            {{ error }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% if form.img.errors %}
+    <div class = "form-group has-error">
+    {% else %}
+    <div class = "form-group">
+    {% endif %}
+    {{ form.img.label }} {{ form.img(size =50,
+    class_="form-control") }}
+    </div>    
+    {%if form.img.errors %}
+
+    <ul class="list-group">
+        {% for error in form.img.errors %}
+        <li class="list-group
+        -item list-group-item-danger">
+            {{ error }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    <input class="btn btn-default" type="submit" value ="Add genre">
+</form>
+{% endblock %}
+{% block footer %}
+<footer class="footer mt-auto py-3 bg-light">
+        <div class="container">
+        <span class="text-muted">Books, authors and pictures are not my property</span>
+        </div>
+        </footer>
+{% endblock %}

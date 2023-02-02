@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+{% block styles %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static',
+filename='base.css')}}">
+{% endblock %}
+{% block aside %}
+<div class="aside">
+    <h1>Filters</h1>
+    <form role="form" method="POST" action="{{ url_for('books',id=1) }}">
+        
+        {% if form.author.errors %}
+            <div class = "form-group has-error">
+            {% else %}
+            <div class = "form-group">
+            {% endif %}
+            {{ form.author.label }} {{ form.author(size =20,
+            class_="form-control") }}
+            </div>    
+            {%if form.author.errors %}
+            <ul class="list-group">
+                {% for error in form.author.errors %}
+                <li class="list-group
+                -item list-group-item-danger">
+                    {{ error }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% if form.genre.errors %}
+            <div class = "form-group has-error">
+            {% else %}
+            <div class = "form-group">
+            {% endif %}
+            {{ form.genre.label }} {{ form.genre(size =20,
+            class_="form-control") }}
+            </div>    
+            {%if form.genre.errors %}
+            <ul class="list-group">
+                {% for error in form.genre.errors %}
+                <li class="list-group
+                -item list-group-item-danger">
+                    {{ error }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% if form.price_min.errors %}
+            <div class = "form-group has-error">
+            {% else %}
+            <div class = "form-group">
+            {% endif %}
+            {{ form.price_min.label }} {{ form.price_min(size =20,
+            class_="form-control") }}
+            </div>    
+            {%if form.price_min.errors %}
+            <ul class="list-group">
+                {% for error in form.price_min.errors %}
+                <li class="list-group
+                -item list-group-item-danger">
+                    {{ error }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% if form.price_max.errors %}
+            <div class = "form-group has-error">
+            {% else %}
+            <div class = "form-group">
+            {% endif %}
+            {{ form.price_max.label }} {{ form.price_max(size =20,
+            class_="form-control") }}
+            </div>    
+            {%if form.price_max.errors %}
+            <ul class="list-group">
+                {% for error in form.price_max.errors %}
+                <li class="list-group
+                -item list-group-item-danger">
+                    {{ error }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% if form.order.errors %}
+            <div class = "form-group has-error">
+            {% else %}
+            <div class = "form-group">
+            {% endif %}
+            {{ form.order.label }} {{ form.order(size =20,
+            class_="form-control") }}
+            </div>    
+            {%if form.order.errors %}
+            <ul class="list-group">
+                {% for error in form.order.errors %}
+                <li class="list-group
+                -item list-group-item-danger">
+                    {{ error }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            <div class="form-group">
+            <input type="submit" class="btn btn-primary" value="Submit"></input>
+            </div>
+    </form>
+</div>
+{% endblock %}
+{% block content %}
+<h1>{{title}}</h1>
+<div class="sample ">
+{% for x in books %}
+<a href="{{url_for('detail_book', id=x.id)}}">
+<img class="m-2 img-thumbnail" src="{{ url_for('static', filename='images/'+x.img) }}"
+alt="{{x.title}}" title="{{x.title}}|{{x.author.name}}|{{x.price}}" height="180"></a>
+{% endfor %}
+</ul>
+<a href="{{url_for('add_book',id=-1)}}" class="btn btn-primary">Add a book</a>
+</div>
+{%if nbp>1%}
+    <ul class="p-4 pagination justify-content-center">
+        {% if id==1 %}
+        <li class="page-item previous disabled"><a class="page-link" href="#">Previous</a></li>
+        {% else %}
+        <li class="page-item previous "><a class="page-link" href="{{ url_for('books_filtered',id=id-1,auth=form.author,gen=form.genre,pmi=form.price_min,pma=form.price_max,order=form.order) }}">Previous</a></li>
+        {% endif %}
+      {% for nombre in range(1, nbp+1) %}
+      {% if nombre == id %}
+        <li class="page-item active"><a class="page-link" href="#">{{nombre}}</a></li>
+        {% else %}
+        <li class="page-item" ><a class="page-link" href="{{url_for('books_filtered', id=nombre,auth=form.author,gen=form.genre,pmi=form.price_min,pma=form.price_max,order=form.order)}}">{{nombre}}</a></li>
+        {% endif %}
+        {% endfor %}
+        {% if id==nbp %}
+        <li class="page-item next disabled"><a class="page-link" href="#">Next</a></li>
+        {% else %}
+        <li class="page-item next "><a class="page-link" href="{{url_for('books_filtered',id=id+1,auth=form.author,gen=form.genre,pmi=form.price_min,pma=form.price_max,order=form.order)}}">Next</a></li>
+        {% endif %}
+    </ul>
+    {% endif %}
+{% endblock %}
+{% block footer %}
+<footer class="footer mt-auto py-3 bg-light">
+        <div class="container">
+        <span class="text-muted">Books, authors and pictures are not my property</span>
+        </div>
+        </footer>
+{% endblock %}
