@@ -74,3 +74,12 @@
 	
 	color: #fff;
 }
+
+/* change l'image de fond avec une opacité de 0.2*/
+body{
+    background-image: url("../static/images/bg-author.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+}
