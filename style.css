@@ -1,0 +1,94 @@
+/* Feuille de style pour la page QuizzJs.html Centre les éléments avec du padding et une couleur de fond qui est #FCEADE */
+body {
+    background-color: #2c2c2c;
+    padding: 20px;
+}
+/* les titres sont centré en police colibri */
+h1,h2,h3 {
+    text-align: center;
+    font-family: Calibri;
+    color: #ededed;
+}
+/* form est un flex et ses enfants sont flex items avec un background de #25CED1
+les differents items sont espacés de 20 px form est centré sur la page*/
+form {
+    display: flex;
+    flex-direction: column;
+    background-color: #464646;
+    padding: 20px;
+    flex-wrap: wrap;
+    max-width: 500px;
+    margin: 0 auto;
+}
+/* chaque enfant de flex a les bords arrondis ,fait max 300 px et est centré
+la police utilisée est Biome en 16*/
+form > * {
+    max-width: 300px;
+    margin: 5px auto;
+    font-family: Calibri;
+    font-size: 18px;
+    padding: 10px;
+    color: #ededed;
+}
+
+/* les divs sont centrés et on a que un élément par ligne */
+div {
+    display: flex;
+    text-align: center;
+    flex-wrap: wrap;
+    flex-direction: column;
+    margin:0 auto;
+}
+/* les enfants de div sont centré et ont un padding de 10px */
+div > * , form{
+    border-radius: 5px;
+    margin: 0 auto;
+    padding: 5px;
+}
+
+input[type="button"] ,button{
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #017ce1;
+    min-width: 200px;
+    min-height: 50px;
+    border-radius: 10px;
+}
+
+/* les sections d'id qui commencent par q sont en background 25CED1 et centrés, les enfants sont flexitems centrés */
+.quest, #sfin,#score,.quest input[type="url"],.quest input[type="text"],.quest input[type="number"],.quest input[type="date"], .quest p,.select{
+    background-color: #464646;
+    display: flex;
+    flex-direction: column;
+    border-radius: 5px;
+    text-align: center;
+    flex-wrap: wrap;
+    max-width: 500px;
+    margin: 0 auto;
+    color: #ededed; 
+    font-size: 20px;
+    font-family: Calibri;
+    padding: 5px;
+}
+
+/* le select d'id scrollselect est de 100px max et en overflow on scroll */
+#scrollselect {
+    max-height: 100px;
+    overflow: scroll;
+}
+
+#myProgress {
+    width: 0%;
+    background-color: #017ce1;
+    color:#464646;
+    font-family: Calibri;
+    font-size: 16px;
+  }
+  
+#myBar {
+width: 100%;
+height: 20px;
+background-color: #2c2c2c;
+text-align: center; /* To center it horizontally (if you want) */
+line-height: 20px; /* To center it vertically */
+}

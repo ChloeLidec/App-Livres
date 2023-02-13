@@ -1,2 +1,0 @@
-FLASK_APP=applivres
-FLASK_ENV=development

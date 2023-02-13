@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>TPQuizzJs</title>
+</head>
+<body>
+    <h1>Quizz sur vos connaissances</h1>
+    <!-- Fait une progress bar -->
+    <div id="myProgress">
+        <div id="myBar"></div>
+      </div>
+    <section id="questioninfos">
+        <h2>Veuillez commencer par remplir ce formulaire pour continuer</h2>
+        <h3>Les champs marqués * sont obligatoires</h3>
+        <form class="infos" method="post">
+            <div>
+                <fieldset><legend>Selectionnez vos pronoms*:</legend>
+                    <input class="finfos" type="checkbox" name="genre" value="il">il
+                    <input class="finfos" type="checkbox" name="genre" value="elle">elle
+                    <input class="finfos" type="checkbox" name="genre" value="iel">iel
+                </fieldset>
+            </div>
+            <div>
+                <label for="nom">Nom*</label>
+                <input class="finfos" type="text" placeholder="Nom"  name="nom" id="nom">
+            </div>
+            <div>
+                <label for="prenom">Prenom*</label>
+                <input class="finfos" type="text" placeholder="Prenom" name="prenom" id="prenom"  >
+            </div>
+            <div>
+                <label for="mail">Mail*</label>
+                <input class="finfos" type="email" placeholder="votreemail@servicemail.fr" name="mail" id="mail" >
+            </div>
+            <div>
+                <label for="date">Date de naissance*</label>
+                <input class="finfos" type="date" name="date" id="date" >
+            </div>
+            <div>
+                <label for="url">Votre site</label>
+                <input class="finfos" type="url" name="url" id="url">
+            </div>
+            <div>
+                <label for="tel">Téléphone*</label>
+                <input class="finfos" type="tel" placeholder="0102030405"  name="tel" id="tel">
+            </div>
+            <input id="infos" type="button" value="Continuer" onclick="sendInfos()">
+        </form>
+    </section>
+    <section id="question1" class="quest">
+        <h2 class="numq">Question 1</h2>
+    </section>
+    <section id="question2" class="quest">
+        <h2 class="numq">Question 2</h2>
+    </section>
+    <section id="question3" class="quest">
+        <h2 class="numq">Question 3</h2>
+    </section>
+    <section id="question4" class="quest">
+        <h2 class="numq">Question 4</h2>
+    </section>
+    <section id="question5" class="quest">
+        <h2 class="numq">Question 5</h2>
+    </section>
+    <section id="question6" class="quest">
+        <h2 class="numq">Question 6</h2>
+    </section>
+    <section id="question7" class="quest">
+        <h2 class="numq">Question 7</h2>
+    </section>
+    <section id="question8" class="quest">
+        <h2 class="numq">Question 8</h2>
+    </section>
+    <section id="question9" class="quest">
+        <h2 class="numq">Question 9</h2>
+    </section>
+    <section id="question10" class="quest">
+        <h2 class="numq">Question 10</h2>
+    </section>
+    <section id="sfin" >
+        <h2>Fin du quizz</h2>
+        <button id="end" ><a href="./QuizzJs.html">Retour acceuil</a></button>
+    </section>
+        <script src="./scriptquizz.js"></script>
+</body>
+</html>
