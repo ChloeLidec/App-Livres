@@ -89,6 +89,46 @@ qplus30:[
 ]
 };
 
+const quizzes = {
+    0: {
+        name: "Quiz 1",
+        questions: [{
+            name: "Quel est le nom de la série qui tourne autour de la vie d'adolescents dans un club de chant avec pour professeur Will Schuester?",
+            type: "radio",
+            answer: "Glee",
+            choices: ["High School Musical", "Pitch Perfect", "The Voice", "The Masked Singer", "The Voice Kids", "Glee"]
+        }, {
+            name: "Quel est le nom de la planète d'origine de Supergirl ?",
+            type: "text",
+            answer: "Krypton"
+        }, {
+            name: "Quels sont les mobs qui apparaissent seuleument dans la nuit ou dans les grottes dans minecraft parmis ceux présents dans la liste?",
+            type: "checkbox",
+            answer: ["Creeper", "Zombie", "Araignée", ],
+            choices: ["Creeper", "Zombie", "Lapin", "Araignée", "Cochon"]
+        }],
+        nbQuestions: 3,
+        description: "Quiz sur les séries et les films"
+            },
+    1: {
+        name: "Quiz 2",
+        questions: [{
+            name: "Quel est le nom de la planète d'origine de Supergirl ?",
+            type: "text",
+            answer: "Krypton"
+        }, {
+            name: "Quels sont les mobs qui apparaissent seuleument dans la nuit ou dans les grottes dans minecraft parmis ceux présents dans la liste?",
+            type: "checkbox",
+            answer: ["Creeper", "Zombie", "Araignée", ],
+            choices: ["Creeper", "Zombie", "Lapin", "Araignée", "Cochon"]
+        }
+        ],
+        nbQuestions: 2,
+        description: "Quiz sur Minecraft"
+    },
+    
+};
+
 var score = 0;
 
 function hide(){
@@ -148,13 +188,14 @@ function sendInfos(){
             //if everything is ok, stock the infos in the local storage and load the quiz based on the age of the user
             if(age<30){
                 //si l'utilisateur a moins de 50 ans on utilise la liste qmoin50 du fichier json ficquest
-                window.listQ = dataQ.qmoins30; //window.listQ est une variable globale qui contient la liste des questions
+                window.qAuto = dataQ.qmoins30; //window.qAuto est une variable globale qui contient le quiz à afficher en fonction de l'age de l'utilisateur
             }
             else{
                 //si l'utilisateur a plus de 50 ans on utilise la liste qplus50 du fichier json ficquest
-                window.listQ = dataQ.qplus30;
+                window.qAuto = dataQ.qplus30;
             }
-            load("infos","1");
+            showChoices();
+            //load("infos","1");
     }}
 }
 
@@ -174,9 +215,59 @@ function olderThanSixteen() {
     return age;
 }
 
+function showChoices(){
+    //show the choices for the quizzes 
+    document.getElementById("questioninfos").style.display="none";
+
+    //put the choices
+    let choices = document.getElementById("choices");
+    choices.innerHTML = "";
+    //make the div for the auto quiz
+    let autoQ = window.quiz;
+    choices.innerHTML += '<div class="card bg-dark my-3" style="width:40rem;"><div class="card-header text-white"> Auto quiz'+
+    '</div><div class="card-body"><h5 class="card-title text-white">Quiz de pop culture pour vous</h5>'+
+      '<p class="card-text text-white">Effectuez un quiz de pop culture en fonction de votre age et découvrez votre niveau</p>'+
+      '<input id="autoQ" type="button" value="Faire le quiz" onclick="loadQuiz()"></div></div>';
+    //get length of the quizzes eith jquery
+    for (let i = 0; i < Object.keys(quizzes).length ; i++) {
+        //get the name of the quiz
+        let name = quizzes[i].name;
+        //get the description of the quiz
+        let desc = quizzes[i].description;
+        //put the name and the description in the choices div
+        choices.innerHTML += '<div class="card bg-dark my-3" style="width:40rem;"><div class="card-header text-white"> '+name+
+        '</div><div class="card-body text-white"><h5 class="card-title text-white">Quiz n°'+(i+1)+'</h5>'+
+            '<p class="card-text">'+desc+'</p>'+
+            '<input id="'+name+'" type="button" value="Faire le quiz" onclick="loadQuiz()"></div></div>';
+    }
+    document.getElementById("choices").style.display="block";
+}
+
+function loadQuiz(){
+    let id = event.target.id;
+        //if the id is autoQ, load the auto quiz
+        if (id == "autoQ") {
+            window.quiz = window.qAuto;
+        }
+        else{
+            //else load the quiz with the same name as the button
+            for (let i = 0; i < quizzes.length; i++) {
+                if (quizzes[i].name == id) {
+                    window.quiz = quizzes[i];
+                }
+            }
+        }
+        load("choices","1");
+    }
+
 function load(prec,iden) {
     // if it's the end of the quizz hide the precendent question and show the end page while updating the score
-    if (iden=="end"){
+    if (prec=="choices"){
+        document.getElementById("choices").style.display = "none";
+        document.getElementById("question1").style.display = "block";
+        loadQ("1");
+    }
+    else if (iden=="end"){
         document.getElementById("question"+prec).style.display = "none";
         document.getElementById("sfin").style.display = "block";
         updateScore(iden);
@@ -204,7 +295,7 @@ function updateScore(iden){
 }
 
 function loadQ(idQ){
-    let question = window.listQ[idQ-1];
+    let question = window.quiz[idQ-1];
     let name = question.name;
     let choices = question.choices;
     let type = question.type;
@@ -268,8 +359,8 @@ function sliderChange(val) {
 function verifQuestion(idQ){
     // from the question idQ we get the question and the answer in the list and then proceed to check if the answer entered is the right one
     // again the texts are in french for the same reason as before
-    let rightAnswer = window.listQ[parseInt(idQ)-1].answer;
-    let type = window.listQ[parseInt(idQ)-1].type;
+    let rightAnswer = window.quiz[parseInt(idQ)-1].answer;
+    let type = window.quiz[parseInt(idQ)-1].type;
     let valid=true;
     if (type == "radio") {
         if (document.querySelector('input[name="answer"]:checked')== null) {
@@ -354,11 +445,10 @@ function verifQuestion(idQ){
         verif.setAttribute("onclick", "load('10','end')");
     }
     progBar=document.getElementById("myProgress");
-    progBar.style.width = (idQ/window.listQ.length)*100 + "%";
-    progBar.innerHTML = (idQ/window.listQ.length)*100 + "%";
+    progBar.style.width = (idQ/window.quiz.length)*100 + "%";
+    progBar.innerHTML = (idQ/window.quiz.length)*100 + "%";
     //we always update the score here 
     updateScore(idQ);}
     
 }
-
 
