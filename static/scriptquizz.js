@@ -234,7 +234,7 @@ function loadQuiz(){
             }
         }
     }
-    nbQuestions = window.quiz.length - 1;
+    nbQuestions = window.quiz.length;
     load("choices","1");
 }
 

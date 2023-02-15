@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./static/style.css">
     <title>TPQuizzJs</title>
 </head>
 <body>
@@ -18,14 +18,7 @@
     <section id="questioninfos">
         <h2>Veuillez commencer par remplir ce formulaire pour continuer</h2>
         <h3>Les champs marqués * sont obligatoires</h3>
-        <form class="infos" method="post">
-            <div>
-                <fieldset><legend>Selectionnez vos pronoms*:</legend>
-                    <input class="finfos" type="checkbox" name="genre" value="il">il
-                    <input class="finfos" type="checkbox" name="genre" value="elle">elle
-                    <input class="finfos" type="checkbox" name="genre" value="iel">iel
-                </fieldset>
-            </div>
+        <form class="infos">
             <div>
                 <label for="date">Date de naissance*</label>
                 <input class="finfos" type="date" name="date" id="date" >
@@ -33,42 +26,14 @@
             <input id="infos" type="button" value="Continuer" onclick="sendInfos()">
         </form>
     </section>
-    <section id="choices" class="d-flex flex-wrap">
+    <section id="choices">
     </section>
-    <section id="question1" class="quest">
-        <h2 class="numq">Question 1</h2>
-    </section>
-    <section id="question2" class="quest">
-        <h2 class="numq">Question 2</h2>
-    </section>
-    <section id="question3" class="quest">
-        <h2 class="numq">Question 3</h2>
-    </section>
-    <section id="question4" class="quest">
-        <h2 class="numq">Question 4</h2>
-    </section>
-    <section id="question5" class="quest">
-        <h2 class="numq">Question 5</h2>
-    </section>
-    <section id="question6" class="quest">
-        <h2 class="numq">Question 6</h2>
-    </section>
-    <section id="question7" class="quest">
-        <h2 class="numq">Question 7</h2>
-    </section>
-    <section id="question8" class="quest">
-        <h2 class="numq">Question 8</h2>
-    </section>
-    <section id="question9" class="quest">
-        <h2 class="numq">Question 9</h2>
-    </section>
-    <section id="question10" class="quest">
-        <h2 class="numq">Question 10</h2>
+    <section id="question">
     </section>
     <section id="sfin" >
         <h2>Fin du quizz</h2>
-        <button id="end" ><a href="./index.html">Retour acceuil</a></button>
+        <a href="./index.html" id="end" class="btn btn-primary" >Retour accueil</a>
     </section>
-        <script src="./scriptquizz.js"></script>
+        <script src="./static/scriptquizz.js"></script>
 </body>
 </html>
