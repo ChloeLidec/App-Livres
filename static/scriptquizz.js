@@ -13,11 +13,6 @@ const dataQ={qmoins30:[
     min:"4",
     max:"15",
     step:"1"},
-
-    {name: "Quel est le lien de la vidéo youtube parodique de I knew you were trouble de Taylor Swift ?(prenez le lien entier présent dans la barre d'adresse)",
-    type:"url",
-    answer: "https://www.youtube.com/watch?v=-aLYvZ5sX28"},
-
     {name: "Quel est le nom de la planète d'origine de Supergirl ?",
     type:"text",
     answer: "Krypton"},
@@ -57,11 +52,6 @@ qplus30:[
     min:"3",
     max:"10",
     step:"1"},
-
-    {name: "Quel est le lien vers l'article de Wikipédia sur la série Friends ?(prenez le lien entier présent dans la barre d'adresse)",
-    type:"url",
-    answer: "https://fr.wikipedia.org/wiki/Friends"},
-    
     {name: "Quel est le nom de la voiture de Doc Brown dans Retour vers le futur ?",
     type:"text",
     answer: "DeLorean"},
@@ -130,14 +120,15 @@ const quizzes = {
 };
 
 var score = 0;
+var currentQuestion = 0;
+var nbQuestions = 0;
 
 function hide(){
     //hide all sections with quest class
-    document.querySelectorAll(".quest").forEach(function (element) {
-        element.style.display="none";
-    });
+    document.getElementById("question").style.display="none";
     document.getElementById("sfin").style.display="none";
     document.getElementById("myProgress").style.display="none";
+    document.getElementById("choices").style.display="none";
     //put all the inputs in the form back to their default value
     document.querySelectorAll(".finfos").forEach(function (element) {
         if (element.type == "checkbox") {
@@ -154,21 +145,9 @@ window.onload=hide();
 function sendInfos(){
     //send all the infos the user entered in the form
     //here the variables are in french because the website is for school in France so these stay in french
-    let genre = document.getElementsByName("genre");
     let date = document.getElementById("date");
     // Since as explained in the readme, the patterns didn't work, i had to do it manually
-    let verif = false;
-    let mess ="";
-    //checks that at least one pronoun is selected
-    for (let i = 0; i < genre.length; i++) {
-        if(genre[i].checked){
-            verif = true;
-        }
-    }
-    if(!verif){
-        mess+="‣ Veuillez cocher au moins un pronom \n";
-    }
-    
+    let mess ="";  
     //checks that the date is not empty and that it is a valid date
     if(!date.value.match(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/)){
         mess+="‣ La date doit être sous la forme YYYY-MM-DD\n";
@@ -218,8 +197,6 @@ function olderThanSixteen() {
 function showChoices(){
     //show the choices for the quizzes 
     document.getElementById("questioninfos").style.display="none";
-
-    //put the choices
     let choices = document.getElementById("choices");
     choices.innerHTML = "";
     //make the div for the auto quiz
@@ -240,43 +217,42 @@ function showChoices(){
             '<p class="card-text">'+desc+'</p>'+
             '<input id="'+name+'" type="button" value="Faire le quiz" onclick="loadQuiz()"></div></div>';
     }
-    document.getElementById("choices").style.display="block";
+    document.getElementById("choices").style.display="flex";
 }
 
 function loadQuiz(){
     let id = event.target.id;
-        //if the id is autoQ, load the auto quiz
-        if (id == "autoQ") {
-            window.quiz = window.qAuto;
-        }
-        else{
-            //else load the quiz with the same name as the button
-            for (let i = 0; i < quizzes.length; i++) {
-                if (quizzes[i].name == id) {
-                    window.quiz = quizzes[i];
-                }
+    //if the id is autoQ, load the auto quiz
+    if (id == "autoQ") {
+        window.quiz = window.qAuto;
+    }
+    else{
+        //else load the quiz with the id of the button
+        for (let i = 0; i < Object.keys(quizzes).length; i++) {
+            if (quizzes[i].name == id) {
+                window.quiz = quizzes[i].questions;
             }
         }
-        load("choices","1");
     }
+    nbQuestions = window.quiz.length - 1;
+    load("choices","1");
+}
 
 function load(prec,iden) {
     // if it's the end of the quizz hide the precendent question and show the end page while updating the score
     if (prec=="choices"){
         document.getElementById("choices").style.display = "none";
-        document.getElementById("question1").style.display = "block";
+        document.getElementById("question").style.display = "block";
+        document.getElementById("myProgress").style.display = "block";
         loadQ("1");
     }
     else if (iden=="end"){
-        document.getElementById("question"+prec).style.display = "none";
+        document.getElementById("question").style.display = "none";
         document.getElementById("sfin").style.display = "block";
         updateScore(iden);
     }
     else{
         //hide the precendent question and show the next one
-        document.getElementById("question"+prec).style.display = "none";
-        document.getElementById("question"+iden).style.display = "block";
-        document.getElementById("myProgress").style.display = "block";
         //load the next question using the function
         loadQ(iden);
     }
@@ -288,9 +264,9 @@ function load(prec,iden) {
 function updateScore(iden){
     // update the score
     if (iden =="end") {
-        document.getElementById("sfin").innerHTML += "<p id='score'>Vous avez obtenu un score de :"+score+"/10</p>";}
+        document.getElementById("sfin").innerHTML += "<p id='score'>Vous avez obtenu un score de :"+score+"/"+nbQuestions+"</p>";}
     else{
-        document.getElementById("question"+iden).innerHTML += "<p id='score'>Votre score est de "+score+"/"+iden+"</p>";}
+        document.getElementById("question").innerHTML += "<p id='score'>Votre score est de "+score+"/"+iden+"</p>";}
     
 }
 
@@ -303,52 +279,52 @@ function loadQ(idQ){
     let i = 0;
     // if it's a date, an url,a text, a number or a slider, no need to make a loop because there's only one input
     if (type == "date" || type == "url" || type == "text") {
-            input += "<input type='"+type+"' id='answer"+idQ+"' value=''><br>";
+            input += "<div id='answer"+idQ+"div'><input type='"+type+"' id='answer"+idQ+"' value=''></div>";
         }
     else if (type =="number"){
         min= question.min;
         max= question.max;
-        input += "<input type='number' min="+min+" max="+max+" id='answer"+idQ+"' value=''><br>";
+        input += "<div id='answer"+idQ+"div'><input type='number' min="+min+" max="+max+" id='answer"+idQ+"' value=''></div>";
     }
     else if (type == "slider") {
         min= question.min;
         max= question.max;
         step=question.step;
-        input += "<input type='range' id='answer"+idQ+"' value='' min="+min+" max="+max+" step="+step+" oninput='sliderChange(this.value)'><output id='sliderVal'> </output><br>";
+        input += "<div id='answer"+idQ+"div'><input type='range' id='answer"+idQ+"' value='' min="+min+" max="+max+" step="+step+" oninput='sliderChange(this.value)'><output id='sliderVal'> </output></div>";
     }
     else{
         //otherwise we make a loop to create the inputs
         for (let i = 0; i < choices.length; i++) {
             if (type == "radio"||type=="checkbox") {
-                input += "<input type='"+type+"' id='"+choices[i]+"' name='answer' value='"+choices[i]+"'>"+choices[i]+"<br>";
+                input += "<div id='"+choices[i]+"div'><input type='"+type+"' id='"+choices[i]+"' name='answer' value='"+choices[i]+"'>"+choices[i]+"</input></div><br>";
             }
             // for both of the select type we create the select the first time and then we add the options
             else if (type == "select") {
                 //this one is a simple select
                 if (i == 0) {
-                    input += "<select class='select' id='answer"+idQ+"' name='answer'>";
+                    input += "<div id='answer"+idQ+"div'><select class='select' id='answer"+idQ+"' name='answer'>";
                     input+= "<option value=''>--Choisissez une réponse--</option>";
                 }
                 input += "<option class='select' id='"+choices[i]+"' value='"+choices[i]+"'>"+choices[i]+"</option>";
                 if (i == choices.length-1) {
-                    input += "</select>";
+                    input += "</select></div>";
                 }
             }
             else if (type == "selectS") {
                 // this one is a scrollable select
                 if (i == 0) {
-                    input += "<select class='select' size=3 id='answer"+idQ+"' name='answer'>";
+                    input += "<div id='answer"+idQ+"div'><select class='select' size=3 id='answer"+idQ+"' name='answer'>";
                 }
                 input += "<option class='select' id='"+choices[i]+"' value='"+choices[i]+"'>"+choices[i]+"</option>";
                 if (i == choices.length-1) {
-                    input += "</select>";
+                    input += "</select></div>";
                 }
             }
             
         }
 }
-    document.getElementById("question"+idQ).innerHTML = 
-    document.getElementById("question"+idQ).innerHTML+"<h2>"+name+"</h2><form class='question' method='post'>"+
+    document.getElementById("question").innerHTML = "<h2 id='numq'>Question "+idQ+"/"+nbQuestions+"</h2>"
+    +"<h2>"+name+"</h2><form class='question' method='post'>"+
         input+"<button id='verif"+idQ+"' onclick='verifQuestion("+idQ+")'>Verifier</button></form>";
     
 }
@@ -370,10 +346,13 @@ function verifQuestion(idQ){
         let answer = document.querySelector('input[name="answer"]:checked').value;
         if (answer == rightAnswer) {
             score++;
-            document.getElementById("question"+idQ).innerHTML+="</br><p>✅Bonne réponse</p>";
+            document.getElementById("question").innerHTML+="</br><p>✅Bonne réponse</p>";
+            document.getElementById(answer+"div").style.backgroundColor = "green";
         }
         else{
-            document.getElementById("question"+idQ).innerHTML+="</br><p>❌Mauvaise réponse la bonne réponse était: "+rightAnswer+"</p>";
+            document.getElementById(answer+"div").style.backgroundColor = "red";
+            document.getElementById(rightAnswer+"div").style.backgroundColor = "green";
+            document.getElementById("question").innerHTML+="</br><p>❌Mauvaise réponse</p>";
         }}
     }
     else if (type == "checkbox") {
@@ -382,12 +361,14 @@ function verifQuestion(idQ){
         let answersList = [];
         for (let i = 0; i < answer.length; i++) {
             answersList.push(answer[i].value);
+            document.getElementById(answer[i].value+"div").style.backgroundColor = "red";
         }
         if (answersList.length == 0 ){valid=false;}
         else{
         let goodAns = true;
         //verifie que toutes les bonnes réponses sont cochées et que aucune case qui est cochée est dans les mauvaises réponses
         for (let i = 0; i < rightAnswer.length; i++) {
+            document.getElementById(rightAnswer[i]+"div").style.backgroundColor = "green";
             if (!answersList.includes(rightAnswer[i])) {
                 goodAns = false;
             }
@@ -399,37 +380,30 @@ function verifQuestion(idQ){
         }
         if (goodAns) {
             score++;
-            document.getElementById("question"+idQ).innerHTML+="</br><p>✅Bonne réponse</p>";
+            document.getElementById("question").innerHTML+="</br><p>✅Bonne réponse</p>";
         }
         else{
-            document.getElementById("question"+idQ).innerHTML+="</br><p>❌Mauvaise réponse la bonne réponse était "+rightAnswer+"</p>";
+            document.getElementById("question").innerHTML+="</br><p>❌Mauvaise réponse</p>";
         }}
     }
     // for all the other type the verification is the same
-    else if (type == "text" || type == "url" || type == "date" || type == "slider" || type == "select" || type == "selectS" || type == "number") {
+    else if (type == "text" || type == "date" || type == "slider" || type == "select" || type == "selectS" || type == "number") {
         let answer = document.getElementById("answer"+idQ).value;
-        console.log(answer);
         // if the answer is empty we don't check it
         if (answer == "" ||answer=="--Choisissez une réponse--") {valid=false;}
         //if the url is not valid we don't check it
         
-        else if (type=="url" && !answer.match(/^(https:\/\/www\.)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/)){
-            valid=false;
-            let url =true;
-        }
         else if (answer == rightAnswer) {
             score++;
-            document.getElementById("question"+idQ).innerHTML+="</br><p>✅Bonne réponse</p>";
+            document.getElementById("question").innerHTML+="</br><p>✅Bonne réponse</p>";
+            document.getElementById("answer"+idQ+"div").style.backgroundColor = "green";
         }
         else{
-            document.getElementById("question"+idQ).innerHTML+="</br><p>❌Mauvaise réponse </br> La bonne réponse était: "+rightAnswer+"</p>";
+            document.getElementById("question").innerHTML+="</br><p>❌Mauvaise réponse la bonne réponse était "+rightAnswer+"</p>";
+            document.getElementById("answer"+idQ+"div").style.backgroundColor = "red";
         }
     }
-    if (!valid && url) {
-        alert("Veuillez verfiier la forme de l'informatin entrée");
-        event.preventDefault();
-    }
-    else if(!valid){
+    if(!valid){
         alert("Vous n'avez pas répondu à la question");
         event.preventDefault();
     }
@@ -439,14 +413,18 @@ function verifQuestion(idQ){
     verif.innerHTML = "Suivant";
     //we change the event onclick to the function load 
     verif.setAttribute("onclick", "load('"+idQ+"','"+(parseInt(idQ)+1).toString()+"')");
-    if (idQ == "10") {//change that to idmax so ppl can put as many questions as they want
+    if (idQ == nbQuestions) {
         //if it's the end change it to an end button 
         verif.innerHTML = "Fin";
-        verif.setAttribute("onclick", "load('10','end')");
+        verif.setAttribute("onclick", "load('0','end')");
     }
     progBar=document.getElementById("myProgress");
-    progBar.style.width = (idQ/window.quiz.length)*100 + "%";
-    progBar.innerHTML = (idQ/window.quiz.length)*100 + "%";
+    //get float with one decimal of (idQ/nbQuestions)*100
+    let percent = Math.round((idQ/nbQuestions)*1000)/10;
+    //change the width of the progress bar
+    progBar.style.width = percent+"%";
+    //change the text of the progress bar
+    progBar.innerHTML = percent+"%";
     //we always update the score here 
     updateScore(idQ);}
     
