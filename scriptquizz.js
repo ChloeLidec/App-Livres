@@ -13,9 +13,11 @@ const dataQ={qmoins30:[
     min:"4",
     max:"15",
     step:"1"},
+
     {name: "Quel est le lien de la vidéo youtube parodique de I knew you were trouble de Taylor Swift ?(prenez le lien entier présent dans la barre d'adresse)",
     type:"url",
     answer: "https://www.youtube.com/watch?v=-aLYvZ5sX28"},
+
     {name: "Quel est le nom de la planète d'origine de Supergirl ?",
     type:"text",
     answer: "Krypton"},
@@ -55,9 +57,11 @@ qplus30:[
     min:"3",
     max:"10",
     step:"1"},
+
     {name: "Quel est le lien vers l'article de Wikipédia sur la série Friends ?(prenez le lien entier présent dans la barre d'adresse)",
     type:"url",
     answer: "https://fr.wikipedia.org/wiki/Friends"},
+    
     {name: "Quel est le nom de la voiture de Doc Brown dans Retour vers le futur ?",
     type:"text",
     answer: "DeLorean"},
@@ -88,10 +92,10 @@ qplus30:[
 var score = 0;
 
 function hide(){
-    //hide all the questions and the end page and show the form
-    for (let i = 1; i < 11; i++) {
-        document.getElementById("question"+i).style.display="none";
-    };
+    //hide all sections with quest class
+    document.querySelectorAll(".quest").forEach(function (element) {
+        element.style.display="none";
+    });
     document.getElementById("sfin").style.display="none";
     document.getElementById("myProgress").style.display="none";
     //put all the inputs in the form back to their default value
@@ -111,12 +115,7 @@ function sendInfos(){
     //send all the infos the user entered in the form
     //here the variables are in french because the website is for school in France so these stay in french
     let genre = document.getElementsByName("genre");
-    let nom = document.getElementById("nom");
-    let prenom = document.getElementById("prenom");
-    let mail = document.getElementById("mail");
     let date = document.getElementById("date");
-    let url = document.getElementById("url");
-    let tel = document.getElementById("tel");
     // Since as explained in the readme, the patterns didn't work, i had to do it manually
     let verif = false;
     let mess ="";
@@ -129,28 +128,10 @@ function sendInfos(){
     if(!verif){
         mess+="‣ Veuillez cocher au moins un pronom \n";
     }
-    //checks that the name is not empty and that it starts with a capital letter
-    if(!nom.value.match(/^[a-zA-Z-]+$/) || nom.value[0] != nom.value[0].toUpperCase() || nom.value.length < 2 || nom.value.length > 20){
-        mess+="‣ Le nom doit commencer par une majuscule et ne peut contenir que des lettres sans accents\n";
-    }
-    //checks that the first name is not empty and that it starts with a capital letter
-    if(!prenom.value.match(/^[a-zA-Z-]+$/) || prenom.value[0] != prenom.value[0].toUpperCase() || prenom.value.length < 2 || prenom.value.length > 20){
-        mess+="‣ Le prenom doit commencer par une majuscule et ne peut contenir que des lettres sans accents\n";
-    }
-    //checks that the mail is not empty and that it is a valid mail
-    if(!mail.value.match(/^[a-zA-Z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$/)){
-        mess+="‣ Le mail doit être sous la forme texte@email.ext \n"}
+    
     //checks that the date is not empty and that it is a valid date
     if(!date.value.match(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/)){
         mess+="‣ La date doit être sous la forme YYYY-MM-DD\n";
-    }
-    //checks that if the url is not empty it is a valid url
-    if(!(url.value=='') && !url.value.match(/^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/)){
-        mess+="‣ L'url doit être sous la forme www.url.ext ou url.ext ou https://url.ext ou http://url.ext\n";
-    }
-    //checks that if the phone number is not empty it is a valid phone number
-    if(!tel.value.match(/^[0-9]{10,12}$/)){
-        mess+="‣ Le numéro de téléphone doit être composé de 10 à 12 chiffres\n";
     }
     //first alert for the errors in the form
     if (mess != "") {
@@ -165,8 +146,6 @@ function sendInfos(){
         }
         else{
             //if everything is ok, stock the infos in the local storage and load the quiz based on the age of the user
-            const user = {nom: nom.value, prenom: prenom.value, mail: mail.value, date: date.value, url: url.value, tel: tel.value,age:age};
-            console.log(user);// ici le console.log est simplement pour montrer que les données sont conservées, on pourrait donc les utiliser ultérieurement
             if(age<30){
                 //si l'utilisateur a moins de 50 ans on utilise la liste qmoin50 du fichier json ficquest
                 window.listQ = dataQ.qmoins30; //window.listQ est une variable globale qui contient la liste des questions
@@ -369,7 +348,7 @@ function verifQuestion(idQ){
     verif.innerHTML = "Suivant";
     //we change the event onclick to the function load 
     verif.setAttribute("onclick", "load('"+idQ+"','"+(parseInt(idQ)+1).toString()+"')");
-    if (idQ == "10") {
+    if (idQ == "10") {//change that to idmax so ppl can put as many questions as they want
         //if it's the end change it to an end button 
         verif.innerHTML = "Fin";
         verif.setAttribute("onclick", "load('10','end')");
