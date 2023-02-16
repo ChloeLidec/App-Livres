@@ -457,10 +457,10 @@ function loadForm(idQ){
     //add html to the section depending on the type
     let html = '<select id="selecttype'+idQ+'" class="form-select my-3" onchange="loadForm('+idQ+')">';
     if (type == "reset") {
-        html+='<option value="reset" selected>Choisissez un quiz</option>';
+        html+='<option value="reset" selected>Choisissez un type</option>';
     }
     else{
-        html+='<option value="reset">Choisissez un quiz</option>';
+        html+='<option value="reset">Choisissez un type</option>';
     }
     if (type == "radio") {
         html+='<option value="radio" selected>Radio button</option>';
@@ -561,7 +561,7 @@ function addQuestion(){
     //add a new section with the id question+nbQ
     main.innerHTML+='<section class="quest" id="q'+(nbQ+1)+'">'+
     '<select id="selecttype'+(nbQ+1)+'" class="form-select my-3" onchange="loadForm('+(nbQ+1)+')">'+
-            '<option>Choisissez un quiz</option>'+
+            '<option>Choisissez un type</option>'+
             '<option value="radio">Radio button</option>'+
             '<option value="checkbox">Checkbox</option>'+
             '<option value="text">Text</option>'+
@@ -581,25 +581,44 @@ function saveQuiz(){
     let name = document.getElementById("name").value;
     let desc = document.getElementById("desc").value;
 
+    let mess = "";
     //for each quest section
     for (let i = 0; i < nbQ; i++) {
         //get the id of the section
         let id = quests[i].id;
         id = id.replace("q", "");
         let type = document.getElementById("selecttype"+(i+1)).value;
+        if (type == "Choisissez un type") {
+            mess += "‣ Veuillez choisir un type de question pour la question "+id+"\n";
+        }
         let question = document.getElementById("question"+(i+1)).value;
+        if (question == "") {
+            mess += "‣ Veuillez entrer une question pour la question "+id+"\n";
+        }
         if (type == "radio") {
             let answer = document.getElementById("answer"+(i+1)+"1").value;
+            if (answer == "") {
+                mess += "‣ Veuillez entrer une réponse pour la question "+id+"\n";
+            }
             let choices = [];
             for (let j = 1; j < 5; j++) {
-                choices.push(document.getElementById("answer"+(i+1)+j).value);
+                let val = document.getElementById("answer"+(i+1)+j).value;
+                if (val != "") {
+                    choices.push(val);
+                }
             }
             //randomize the choices order
             choices.sort(() => Math.random() - 0.5);
+            if (choices.length < 2) {
+                mess += "‣ Veuillez entrer au moins 2 réponses pour la question "+id+"\n";
+            }
             questions.push({name: question, type: type, answer: answer, choices: choices});
         }
         else if (type == "checkbox") {
             let answer = document.getElementById("answer"+(i+1)+"1").value;
+            if (answer == "") {
+                mess += "‣ Veuillez entrer une réponse pour la question "+id+"\n";
+            }
             answer = answer.split("|");
             let choices = [];
             for (let k = 0; k < answer.length; k++) {
@@ -610,35 +629,84 @@ function saveQuiz(){
             }
             //randomize the choices order
             choices.sort(() => Math.random() - 0.5);
+            if (choices.length < 2) {
+                mess += "‣ Veuillez entrer au moins 2 réponses pour la question "+id+"\n";
+            }
             questions.push({name: question, type: type, answer: answer, choices: choices});            
         }
         else if (type == "select") {
             let answer = document.getElementById("answer"+(i+1)+"1").value;
+            if (answer == "") {
+                mess += "‣ Veuillez entrer une réponse pour la question "+id+"\n";
+            }
             let choices = [];
             for (let j = 1; j < 5; j++) {
                 choices.push(document.getElementById("answer"+(i+1)+j).value);
             }
             //randomize the choices order
             choices.sort(() => Math.random() - 0.5);
+            if (choices.length < 2) {
+                mess += "‣ Veuillez entrer au moins 2 réponses pour la question "+id+"\n";
+            }
             questions.push({name: question, type: type, answer: answer, choices: choices});
         }
         else if (type == "date" || type == "text") {
             let answer = document.getElementById("answer"+(i+1)).value;
+            if (answer == "") {
+                mess += "‣ Veuillez entrer une réponse pour la question "+id+"\n";
+            }
             questions.push({name: question, type: type, answer: answer});
         }
         else if (type == "number") {
             let answer = document.getElementById("answer"+(i+1)+"1").value;
+            if (answer == "") {
+                mess += "‣ Veuillez entrer une réponse pour la question "+id+"\n";
+            }
             let max = document.getElementById("answer"+(i+1)+"2").value;
             let min = document.getElementById("answer"+(i+1)+"3").value;
+            if (max == "" || min == "") {
+                mess += "‣ Veuillez entrer une valeur maximale et minimale pour la question "+id+"\n";
+            }
+            //if the max is smaller than the min, swap them and if the answer is not between the min and max, set the min to ans-5 and the max to ans+5
+            if (max < min) {
+                let temp = max;
+                max = min;
+                min = temp;  
+            }
+            if (answer < min || answer > max) {
+                min = answer-5;
+                max = answer+5;
+            }
+
             questions.push({name: question, type: type, answer: answer, min: min, max: max});
         }
         else if (type == "slider") {
             let answer = document.getElementById("answer"+(i+1)+"1").value;
+            if (answer == "") {
+                mess += "‣ Veuillez entrer une réponse pour la question "+id+"\n";
+            }
             let max = document.getElementById("answer"+(i+1)+"2").value;
             let min = document.getElementById("answer"+(i+1)+"3").value;
             let step = document.getElementById("answer"+(i+1)+"4").value;
+            if (max == "" || min == "" || step == "") {
+                mess += "‣ Veuillez entrer une valeur maximale, minimale et un pas pour la question "+id+"\n";
+            }
+            //if the max is smaller than the min, swap them and if the answer is not between the min and max, set the min to ans-5 and the max to ans+5
+            if (max < min) {
+                let temp = max;
+                max = min;
+                min = temp;
+            }
+            if (answer < min || answer > max) {
+                min = answer-5;
+                max = answer+5;
+            }
             questions.push({name: question, type: type, answer: answer, min: min, max: max, step: step});
         }
+    }
+    if (mess != "") {
+        alert(mess);
+        return;
     }
     let quiz = {name: name, questions: questions,nbQuestions:nbQ, description: desc};
     //save the quiz in the session storage
