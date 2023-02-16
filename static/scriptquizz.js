@@ -510,44 +510,44 @@ function loadForm(idQ){
         section.innerHTML = html;
     }
     else if (type == "radio" || type == "select") {
-        qhtml = '<h5 class="text-white">'+type+'</h5><input type="text" id="question'+idQ+'" class="form-control" placeholder="Question" aria-label="Question">'+
-        '<input type="text" id="answer'+idQ+'1" class="form-control" placeholder="Réponse" aria-label="Réponse">'+
-        '<input type="text" id="answer'+idQ+'2" class="form-control" placeholder="Mauvaise réponse" aria-label="Mauvaise réponse">'+
-        '<input type="text" id="answer'+idQ+'3" class="form-control" placeholder="Mauvaise réponse" aria-label="Mauvaise réponse">'+
-        '<input type="text" id="answer'+idQ+'4" class="form-control" placeholder="Mauvaise réponse" aria-label="Mauvaise réponse">';
+        qhtml = '<h5 class="text-white">'+type+'</h5><input type="text" id="question'+idQ+'" class="form-control m-3" placeholder="Question" aria-label="Question">'+
+        '<input type="text" id="answer'+idQ+'1" class="form-control m-3" placeholder="Réponse" aria-label="Réponse">'+
+        '<input type="text" id="answer'+idQ+'2" class="form-control m-3" placeholder="Mauvaise réponse" aria-label="Mauvaise réponse">'+
+        '<input type="text" id="answer'+idQ+'3" class="form-control m-3" placeholder="Mauvaise réponse" aria-label="Mauvaise réponse">'+
+        '<input type="text" id="answer'+idQ+'4" class="form-control m-3" placeholder="Mauvaise réponse" aria-label="Mauvaise réponse">';
         section.innerHTML = html+qhtml;
         }
     else if (type == "checkbox") {
-        qhtml = '<h5 class="text-white">'+type+'</h5><input type="text" id="question'+idQ+'" class="form-control" placeholder="Question" aria-label="Question">'+
-        '<input type="text" id="answer'+idQ+'1" class="form-control" placeholder="Réponse(s) séparées par |" aria-label="Réponse">'+
-        '<input type="text" id="answer'+idQ+'2" class="form-control" placeholder="Mauvaise réponse" aria-label="Mauvaise réponse">'+
-        '<input type="text" id="answer'+idQ+'3" class="form-control" placeholder="Mauvaise réponse" aria-label="Mauvaise réponse">'+
-        '<input type="text" id="answer'+idQ+'4" class="form-control" placeholder="Mauvaise réponse" aria-label="Mauvaise réponse">';
+        qhtml = '<h5 class="text-white">'+type+'</h5><input type="text" id="question'+idQ+'" class="form-control m-3" placeholder="Question" aria-label="Question">'+
+        '<input type="text" id="answer'+idQ+'1" class="form-control m-3" placeholder="Réponse(s) séparées par |" aria-label="Réponse">'+
+        '<input type="text" id="answer'+idQ+'2" class="form-control m-3" placeholder="Mauvaise réponse" aria-label="Mauvaise réponse">'+
+        '<input type="text" id="answer'+idQ+'3" class="form-control m-3" placeholder="Mauvaise réponse" aria-label="Mauvaise réponse">'+
+        '<input type="text" id="answer'+idQ+'4" class="form-control m-3" placeholder="Mauvaise réponse" aria-label="Mauvaise réponse">';
         section.innerHTML = html+qhtml;
     }
     else if (type == "date") {
-        qhtml = '<h5 class="text-white">'+type+'</h5><input type="text" id="question'+idQ+'" class="form-control" placeholder="Question" aria-label="Question">'+
-        '<input type="date" id="answer'+idQ+'" class="form-control" placeholder="Réponse(aaaa-mm-dd)" aria-label="Réponse">';
+        qhtml = '<h5 class="text-white">'+type+'</h5><input type="text" id="question'+idQ+'" class="form-control m-3" placeholder="Question" aria-label="Question">'+
+        '<input type="date" id="answer'+idQ+'" class="form-control m-3" placeholder="Réponse(aaaa-mm-dd)" aria-label="Réponse">';
         section.innerHTML = html+qhtml;
     }
     else if (type == "slider") {
-        qhtml = '<h5 class="text-white">'+type+'</h5><input type="text" id="question'+idQ+'" class="form-control" placeholder="Question" aria-label="Question">'+
-        '<input type="number" id="answer'+idQ+'1" class="form-control" placeholder="Réponse" aria-label="Réponse">'+
-        '<input type="number" id="answer'+idQ+'2" class="form-control" placeholder="Réponse max" aria-label="Réponse max">'+
-        '<input type="number" id="answer'+idQ+'3" class="form-control" placeholder="Réponse min" aria-label="Réponse min">'+
-        '<input type="number" id="answer'+idQ+'4" class="form-control" placeholder="Réponse step" aria-label="Réponse step">';
+        qhtml = '<h5 class="text-white">'+type+'</h5><input type="text" id="question'+idQ+'" class="form-control m-3" placeholder="Question" aria-label="Question">'+
+        '<input type="number" id="answer'+idQ+'1" class="form-control m-3" placeholder="Réponse" aria-label="Réponse">'+
+        '<input type="number" id="answer'+idQ+'2" class="form-control m-3" placeholder="Réponse max" aria-label="Réponse max">'+
+        '<input type="number" id="answer'+idQ+'3" class="form-control m-3" placeholder="Réponse min" aria-label="Réponse min">'+
+        '<input type="number" id="answer'+idQ+'4" class="form-control m-3" placeholder="Réponse step" aria-label="Réponse step">';
         section.innerHTML = html+qhtml;
     }
     else if (type == "text") {
-        qhtml = '<h5 class="text-white">'+type+'</h5><input type="text" id="question'+idQ+'" class="form-control" placeholder="Question" aria-label="Question">'+
-        '<input type="text" id="answer'+idQ+'" class="form-control" placeholder="Réponse" aria-label="Réponse">';
+        qhtml = '<h5 class="text-white">'+type+'</h5><input type="text" id="question'+idQ+'" class="form-control m-3" placeholder="Question" aria-label="Question">'+
+        '<input type="text" id="answer'+idQ+'" class="form-control m-3" placeholder="Réponse" aria-label="Réponse">';
         section.innerHTML = html+qhtml;
     }
     else if (type == "number") {
-        qhtml = '<h5 class="text-white">'+type+'</h5><input type="text" id="question'+idQ+'" class="form-control" placeholder="Question" aria-label="Question">'+
-        '<input type="number" id="answer'+idQ+'1" class="form-control" placeholder="Réponse" aria-label="Réponse">'+
-        '<input type="number" id="answer'+idQ+'2" class="form-control" placeholder="Réponse max" aria-label="Réponse max">'+
-        '<input type="number" id="answer'+idQ+'3" class="form-control" placeholder="Réponse min" aria-label="Réponse min">';
+        qhtml = '<h5 class="text-white">'+type+'</h5><input type="text" id="question'+idQ+'" class="form-control m-3" placeholder="Question" aria-label="Question">'+
+        '<input type="number" id="answer'+idQ+'1" class="form-control m-3" placeholder="Réponse" aria-label="Réponse">'+
+        '<input type="number" id="answer'+idQ+'2" class="form-control m-3" placeholder="Réponse max" aria-label="Réponse max">'+
+        '<input type="number" id="answer'+idQ+'3" class="form-control m-3" placeholder="Réponse min" aria-label="Réponse min">';
         section.innerHTML = html+qhtml;
     }
 
@@ -560,7 +560,7 @@ function addQuestion(){
     //get the number of sections that have the class quest
     let nbQ = document.getElementsByClassName("quest").length;
     //add a new section with the id question+nbQ
-    main.innerHTML+='<section class="quest" id="q'+(nbQ+1)+'">'+
+    main.innerHTML+='<section class="quest border border-primary rounded p-5 justify-content-around" id="q'+(nbQ+1)+'">'+
     '<select id="selecttype'+(nbQ+1)+'" class="form-select my-3" onchange="loadForm('+(nbQ+1)+')">'+
             '<option selected>Choisissez un type</option>'+
             '<option value="radio">Radio button</option>'+
