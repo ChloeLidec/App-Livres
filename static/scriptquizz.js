@@ -561,7 +561,7 @@ function addQuestion(){
     //add a new section with the id question+nbQ
     main.innerHTML+='<section class="quest" id="q'+(nbQ+1)+'">'+
     '<select id="selecttype'+(nbQ+1)+'" class="form-select my-3" onchange="loadForm('+(nbQ+1)+')">'+
-            '<option>Choisissez un type</option>'+
+            '<option selected>Choisissez un type</option>'+
             '<option value="radio">Radio button</option>'+
             '<option value="checkbox">Checkbox</option>'+
             '<option value="text">Text</option>'+
