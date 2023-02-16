@@ -437,8 +437,9 @@ function verifQuestion(idQ){
     progBar=document.getElementById("myProgress");
     //get float with one decimal of (idQ/nbQuestions)*100
     let percent = Math.round((idQ/nbQuestions)*1000)/10;
-    //change the width of the progress bar
-    progBar.style.width = percent+"%";
+    //change the width of the progress bar to percent% of 80%
+    let width = percent*0.8;
+    progBar.style.width = width+"%";
     //change the text of the progress bar
     progBar.innerHTML = percent+"%";
     //we always update the score here 
