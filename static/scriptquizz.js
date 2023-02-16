@@ -1,4 +1,3 @@
-//the lists of questions are stocked here in a json format because i couln't find a way to import a json file in javascript           
 const dataQ={qmoins30:[
     {name: "Quel est le nom de Supergirl ?",
     type:"radio",
@@ -119,6 +118,15 @@ const quizzes = {
     
 };
 
+
+
+// read only if session storage is available
+if(typeof(sessionStorage) != 'undefined') {
+    // read only if exists
+    if (sessionStorage.getItem("quizzes")) {
+        listQuizzes = JSON.parse(sessionStorage.getItem("quizzes"));
+    }
+}
 var score = 0;
 var currentQuestion = 0;
 var nbQuestions = 0;
@@ -205,7 +213,9 @@ function showChoices(){
     '</div><div class="card-body"><h5 class="card-title text-white">Quiz de pop culture pour vous</h5>'+
       '<p class="card-text text-white">Effectuez un quiz de pop culture en fonction de votre age et découvrez votre niveau</p>'+
       '<input id="autoQ" type="button" value="Faire le quiz" onclick="loadQuiz()"></div></div>';
-    //get length of the quizzes eith jquery
+    //get the quizzes from the session storage
+    let quizzes = JSON.parse(sessionStorage.getItem("quizzes"));
+    console.log(quizzes);
     for (let i = 0; i < Object.keys(quizzes).length ; i++) {
         //get the name of the quiz
         let name = quizzes[i].name;
@@ -227,10 +237,10 @@ function loadQuiz(){
         window.quiz = window.qAuto;
     }
     else{
-        //else load the quiz with the id of the button
+        let quizzes = JSON.parse(sessionStorage.getItem("quizzes"));
         for (let i = 0; i < Object.keys(quizzes).length; i++) {
             if (quizzes[i].name == id) {
-                window.quiz = quizzes[i].questions;
+                window.quiz = quizzes[i].questions;                
             }
         }
     }
@@ -430,3 +440,277 @@ function verifQuestion(idQ){
     
 }
 
+
+
+//quiz creation part
+function loadForm(idQ){
+    //get the value of the select that calls this function
+    let type = document.getElementById("selecttype"+idQ).value;
+    //get the div that contains the form
+    let section = document.getElementById("question"+idQ);
+    //add html to the section depending on the type
+    let html = '<select id="selecttype'+idQ+'" class="form-select my-3" onchange="loadForm('+idQ+')">';
+    if (type == "reset") {
+        html+='<option value="reset" selected>Choisissez un quiz</option>';
+    }
+    else{
+        html+='<option value="reset">Choisissez un quiz</option>';
+    }
+    if (type == "radio") {
+        html+='<option value="radio" selected>Radio button</option>';
+    }
+    else{
+        html+='<option value="radio">Radio button</option>';
+    }
+    if (type == "checkbox") {
+        html+='<option value="checkbox" selected>Checkbox</option>';
+    }
+    else{
+        html+='<option value="checkbox">Checkbox</option>';
+    }
+    if (type == "text") {
+        html+='<option value="text" selected>Text</option>';
+    }
+    else{
+        html+='<option value="text">Text</option>';
+    }
+    if (type == "number") {
+        html+='<option value="number" selected>Number</option>';
+    }
+    else{
+        html+='<option value="number">Number</option>';
+    }
+    if (type == "date") {
+        html+='<option value="date" selected>Date</option>';
+    }
+    else{
+        html+='<option value="date">Date</option>';
+    }
+    if (type == "slider") {
+        html+='<option value="slider" selected>Slider</option>';
+    }
+    else{
+        html+='<option value="slider">Slider</option>';
+    }
+    if (type == "select") {
+        html+='<option value="select" selected>Select</option>';
+    }
+    else{
+        html+='<option value="select">Select</option>';
+    }
+    html+='</select>';
+    if (type == "reset") {
+        section.innerHTML = html;
+    }
+    else if (type == "radio" || type == "select") {
+        qhtml = '<h5>'+type+'</h5><input type="text" id="question'+idQ+'" class="form-control" placeholder="Question" aria-label="Question">'+
+        '<input type="text" id="answer'+idQ+'1" class="form-control" placeholder="Réponse" aria-label="Réponse">'+
+        '<input type="text" id="answer'+idQ+'2" class="form-control" placeholder="Mauvaise réponse" aria-label="Mauvaise réponse">'+
+        '<input type="text" id="answer'+idQ+'3" class="form-control" placeholder="Mauvaise réponse" aria-label="Mauvaise réponse">'+
+        '<input type="text" id="answer'+idQ+'4" class="form-control" placeholder="Mauvaise réponse" aria-label="Mauvaise réponse">';
+        section.innerHTML = html+qhtml;
+        }
+    else if (type == "checkbox") {
+        qhtml = '<h5>'+type+'</h5><input type="text" id="question'+idQ+'" class="form-control" placeholder="Question" aria-label="Question">'+
+        '<input type="text" id="answer'+idQ+'1" class="form-control" placeholder="Réponse(s) séparées par |" aria-label="Réponse">'+
+        '<input type="text" id="answer'+idQ+'2" class="form-control" placeholder="Mauvaise réponse" aria-label="Mauvaise réponse">'+
+        '<input type="text" id="answer'+idQ+'3" class="form-control" placeholder="Mauvaise réponse" aria-label="Mauvaise réponse">'+
+        '<input type="text" id="answer'+idQ+'4" class="form-control" placeholder="Mauvaise réponse" aria-label="Mauvaise réponse">';
+        section.innerHTML = html+qhtml;
+    }
+    else if (type == "date") {
+        qhtml = '<h5>'+type+'</h5><input type="text" id="question'+idQ+'" class="form-control" placeholder="Question" aria-label="Question">'+
+        '<input type="date" id="answer'+idQ+'" class="form-control" placeholder="Réponse(aaaa-mm-dd)" aria-label="Réponse">';
+        section.innerHTML = html+qhtml;
+    }
+    else if (type == "slider") {
+        qhtml = '<h5>'+type+'</h5><input type="text" id="question'+idQ+'" class="form-control" placeholder="Question" aria-label="Question">'+
+        '<input type="number" id="answer'+idQ+'1" class="form-control" placeholder="Réponse" aria-label="Réponse">'+
+        '<input type="number" id="answer'+idQ+'2" class="form-control" placeholder="Réponse max" aria-label="Réponse max">'+
+        '<input type="number" id="answer'+idQ+'3" class="form-control" placeholder="Réponse min" aria-label="Réponse min">'+
+        '<input type="number" id="answer'+idQ+'4" class="form-control" placeholder="Réponse step" aria-label="Réponse step">';
+        section.innerHTML = html+qhtml;
+    }
+    else if (type == "text") {
+        qhtml = '<h5>'+type+'</h5><input type="text" id="question'+idQ+'" class="form-control" placeholder="Question" aria-label="Question">'+
+        '<input type="text" id="answer'+idQ+'" class="form-control" placeholder="Réponse" aria-label="Réponse">';
+        section.innerHTML = html+qhtml;
+    }
+    else if (type == "number") {
+        qhtml = '<h5>'+type+'</h5><input type="text" id="question'+idQ+'" class="form-control" placeholder="Question" aria-label="Question">'+
+        '<input type="number" id="answer'+idQ+'1" class="form-control" placeholder="Réponse" aria-label="Réponse">'+
+        '<input type="number" id="answer'+idQ+'2" class="form-control" placeholder="Réponse max" aria-label="Réponse max">'+
+        '<input type="number" id="answer'+idQ+'3" class="form-control" placeholder="Réponse min" aria-label="Réponse min">';
+        section.innerHTML = html+qhtml;
+    }
+
+}
+
+//add a new question to the form
+function addQuestion(){
+    //get the main div
+    let main = document.getElementById("main");
+    //get the number of sections that have the class quest
+    let nbQ = document.getElementsByClassName("quest").length;
+    //add a new section with the id question+nbQ
+    main.innerHTML+='<section class="quest" id="question'+(nbQ+1)+'">'+
+    '<select id="selecttype'+(nbQ+1)+'" class="form-select my-3" onchange="loadForm('+(nbQ+1)+')">'+
+            '<option>Choisissez un quiz</option>'+
+            '<option value="radio">Radio button</option>'+
+            '<option value="checkbox">Checkbox</option>'+
+            '<option value="text">Text</option>'+
+            '<option value="number">Number</option>'+
+            '<option value="date">Date</option>'+
+            '<option value="select">Select</option>'+
+            '<option value="slider">Slider</option>'+
+            '</select>'+
+            '</section>';
+}
+
+function saveQuiz(){
+    //get all quests sections
+    let quests = document.getElementsByClassName("quest");
+    //get the number of quests
+    let nbQ = quests.length;
+    //create an array to store the questions
+    let questions = [];
+    //get name of the quiz
+    let name = document.getElementById("name").value;
+    //get the description of the quiz
+    let desc = document.getElementById("desc").value;
+    //for each quest
+    for (let i = 0; i < nbQ; i++) {
+        //get the id of the quest
+        let id = quests[i].id;
+        //get the last character of the id
+        id = id.charAt(id.length-1);
+        //get the type of the quest
+        let type = document.getElementById("selecttype"+(id)).value;
+        //get the question
+        let question = document.getElementById("question"+(id)).value;
+        console.log(question);
+        
+        //{
+           // name: "Quel est le nom de la série qui tourne autour de la vie d'adolescents dans un club de chant avec pour professeur Will Schuester?",
+            //type: "radio",
+            //answer: "Glee",
+            //choices: ["High School Musical", "Pitch Perfect", "The Voice", "The Masked Singer", "The Voice Kids", "Glee"]
+        //}
+        //if the type is radio or checkbox or select
+        if (type == "radio" || type == "select") {
+            //create an array to store the choices
+            let choices = [];
+            for (let j = 1; j < 5; j++) {
+                //get the choice
+                let choice = document.getElementById("answer"+(id)+j).value;
+                //add the choice to the array
+                choices.push(choice);
+            }
+            //get the answer
+            let answer = document.getElementById("answer"+(id)+"1").value;
+            //create a new question
+            let quest = {
+                name: question,
+                type: type,
+                answer: answer,
+                choices: choices
+            }
+            //add the question to the array
+            questions.push(quest);
+        }
+        else if (type == "checkbox") {
+            //create an array to store the choices
+            let choices = [];
+            for (let j = 1; j < 5; j++) {
+                //get the choice
+                console.log("answer"+(id)+j);
+                let choice = document.getElementById("answer"+(id)+j).value;
+                //add the choice to the array
+                choices.push(choice);
+            }
+            //get the answer
+            let answers = document.getElementById("answer"+(id)+"1").value;
+            //get the different answers separated by a |
+            let answer = answers.split("|");
+            //create a new question
+            let quest = {
+                name: question,
+                type: type,
+                answer: answer,
+                choices: choices
+            }
+            //add the question to the array
+            questions.push(quest);
+        }
+
+
+        //if the type is date
+        else if (type == "date" || type == "text") {
+            //get the answer
+            let answer = document.getElementById("answer"+(id)).value;
+            //create a new question
+            let quest = {
+                name: question,
+                type: type,
+                answer: answer
+            }
+            //add the question to the array
+            questions.push(quest);
+        }
+        //if the type is slider
+        else if (type == "slider") {
+            //get the answer
+            let answer = document.getElementById("answer"+(id)+"1").value;
+            //get the max
+            let max = document.getElementById("answer"+(id)+"2").value;
+            //get the min
+            let min = document.getElementById("answer"+(id)+"3").value;
+            //get the step
+            let step = document.getElementById("answer"+(id)+"4").value;
+            //create a new question
+            let quest = {
+                name: question,
+                type: type,
+                answer: answer,
+                max: max,
+                min: min,
+                step: step
+            }
+            //add the question to the array
+            questions.push(quest);
+        }
+        //if the type is number
+        else if (type == "number") {
+            //get the answer
+            let answer = document.getElementById("answer"+(id)+"1").value;
+            //get the max
+            let max = document.getElementById("answer"+(id)+"2").value;
+            //get the min
+            let min = document.getElementById("answer"+(id)+"3").value;
+            //create a new question
+            let quest = {
+                name: question,
+                type: type,
+                answer: answer,
+                max: max,
+                min: min
+            }
+            //add the question to the array
+            questions.push(quest);
+        }
+    }
+
+    //create a new quiz
+    let quiz = {
+        name: name,
+        description: desc,
+        questions: questions,
+        nbQuestions: nbQ
+    }
+    //add to the quizzes object
+    let nbqzs = Object.keys(quizzes).length;
+    quizzes[(nbqzs)] = quiz;
+    //save the quizzes object in the session storage
+    sessionStorage.setItem("quizzes", JSON.stringify(quizzes));
+        
+}

@@ -8,11 +8,42 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="./static/style.css">
+    <script src="./static/scriptquizz.js"></script>
     <title>TPQuizzJs</title>
 </head>
 <body>
-<div class="container d-flex flex-row justify-content-around">
-    <p>Création d'un quiz</p>
+<div class="container d-flex justify-content-around">
+    <section id="questioninfos">
+        <h2>Vous pouvez ajouter des quizs(seuleument pour votre session) depuis ce menu</h2>
+        <h3>Vous pouvez devez remplir les informations sur le quiz pour pouvoir continuer.</h3>
+        <form class="infos">
+            <div>
+                <label for="name">Nom du quiz</label>
+                <input class="finfos" type="text" name="name" id="name" >
+            </div>
+            <div>
+                <label for="desc">Description</label>
+                <input class="finfos" type="text" name="desc" id="desc" >
+            </div>
+        <button id="infos" type="button" class="btn btn-primary" onclick="saveQuiz()">Sauvegarder</button>
+        <button id="infos" type="button" class="btn btn-primary" onclick="addQuestion()">Ajouter une question</button>
+        </form>
+    </section>
+    <h2>Questions</h2>
+    <div id="main" class="d-flex flex-row w-100 justify-content-around">
+    <section class="quest" id="question1" >
+        <select id="selecttype1" class="form-select m-3" aria-label="Choisissez un quiz" onchange="loadForm('1')">
+            <option value="init">Choisissez un quiz</option>
+            <option value="radio">Radio button</option>
+            <option value="checkbox">Checkbox</option>
+            <option value="text">Text</option>
+            <option value="number">Number</option>
+            <option value="date">Date</option>
+            <option value="select">Select</option>
+            <option value="slider">Slider</option>
+        </select>
+    </section>
+</div>
 </div>
 </body>
 </html>
