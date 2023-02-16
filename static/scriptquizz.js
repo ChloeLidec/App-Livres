@@ -561,6 +561,7 @@ function addQuestion(){
     let nbQ = document.getElementsByClassName("quest").length;
     //add a new section with the id question+nbQ
     main.innerHTML+='<section class="quest border border-primary rounded p-5 justify-content-around" id="q'+(nbQ+1)+'">'+
+    '<button type="button" class="btn btn-danger" onclick="deleteQuestion('+(nbQ+1)+')">Supprimer</button>'+
     '<select id="selecttype'+(nbQ+1)+'" class="form-select my-3" onchange="loadForm('+(nbQ+1)+')">'+
             '<option selected>Choisissez un type</option>'+
             '<option value="radio">Radio button</option>'+
@@ -572,6 +573,11 @@ function addQuestion(){
             '<option value="slider">Slider</option>'+
             '</select>'+
             '</section>';
+}
+
+function deleteQuestion(id){
+    let section = document.getElementById("q"+id);
+    section.remove();
 }
 
 function saveQuiz(){
