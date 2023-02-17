@@ -589,6 +589,15 @@ function saveQuiz(){
     let desc = document.getElementById("desc").value;
 
     let mess = "";
+    if (name == "") {
+        mess += "‣ Veuillez entrer un nom pour le quiz\n";
+    }
+    if (desc == "") {
+        mess += "‣ Veuillez entrer une description pour le quiz\n";
+    }
+    if (nbQ == 0) {
+        mess += "‣ Veuillez ajouter au moins une question\n";
+    }
     //for each quest section
     for (let i = 0; i < nbQ; i++) {
         //get the id of the section
