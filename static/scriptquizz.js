@@ -456,7 +456,7 @@ function loadForm(idQ){
     //get the div that contains the form
     let section = document.getElementById("q"+idQ);
     //add html to the section depending on the type
-    let html = '<select id="selecttype'+idQ+'" class="form-select my-3" onchange="loadForm('+idQ+')">';
+    let html = '<button type="button" class="btn btn-danger" onclick="deleteQuestion('+(idQ)+')">Supprimer</button><select id="selecttype'+idQ+'" class="form-select my-3" onchange="loadForm('+idQ+')">';
     if (type == "reset") {
         html+='<option value="reset" selected>Choisissez un type</option>';
     }
@@ -722,9 +722,10 @@ function saveQuiz(){
         quizzesS = quizzes;
     }
     let nbqzs = Object.keys(quizzesS).length;
-    quizzes[nbqzs] = quiz;
-    console.log(quizzes);
-    sessionStorage.setItem("quizzes", JSON.stringify(quizzes));
+    quizzesS[nbqzs] = quiz;
+    sessionStorage.setItem("quizzes", JSON.stringify(quizzesS));
+    alert("Le quiz a été ajouté avec succès");
+    window.location.href = "index.html";
 }
 
 
