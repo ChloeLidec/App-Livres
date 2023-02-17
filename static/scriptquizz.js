@@ -583,6 +583,7 @@ function deleteQuestion(id){
 function saveQuiz(){
     //get all quests sections
     let quests = document.getElementsByClassName("quest");
+    console.log(quests);
     let nbQ = quests.length;
     let questions = [];
     let name = document.getElementById("name").value;
@@ -603,22 +604,23 @@ function saveQuiz(){
         //get the id of the section
         let id = quests[i].id;
         id = id.replace("q", "");
-        let type = document.getElementById("selecttype"+(i+1)).value;
+        console.log(id);
+        let type = document.getElementById("selecttype"+(id)).value;
         if (type == "Choisissez un type") {
             mess += "‣ Veuillez choisir un type de question pour la question "+id+"\n";
         }
-        let question = document.getElementById("question"+(i+1)).value;
+        let question = document.getElementById("question"+(id)).value;
         if (question == "") {
             mess += "‣ Veuillez entrer une question pour la question "+id+"\n";
         }
         if (type == "radio") {
-            let answer = document.getElementById("answer"+(i+1)+"1").value;
+            let answer = document.getElementById("answer"+(id)+"1").value;
             if (answer == "") {
                 mess += "‣ Veuillez entrer une réponse pour la question "+id+"\n";
             }
             let choices = [];
             for (let j = 1; j < 5; j++) {
-                let val = document.getElementById("answer"+(i+1)+j).value;
+                let val = document.getElementById("answer"+(id)+j).value;
                 if (val != "") {
                     choices.push(val);
                 }
@@ -631,7 +633,7 @@ function saveQuiz(){
             questions.push({name: question, type: type, answer: answer, choices: choices});
         }
         else if (type == "checkbox") {
-            let answer = document.getElementById("answer"+(i+1)+"1").value;
+            let answer = document.getElementById("answer"+(id)+"1").value;
             if (answer == "") {
                 mess += "‣ Veuillez entrer une réponse pour la question "+id+"\n";
             }
@@ -641,7 +643,7 @@ function saveQuiz(){
                 choices.push(answer[k]);
             }
             for (let j = 2; j < 5; j++) {
-                choices.push(document.getElementById("answer"+(i+1)+j).value);
+                choices.push(document.getElementById("answer"+(id)+j).value);
             }
             //randomize the choices order
             choices.sort(() => Math.random() - 0.5);
@@ -651,13 +653,13 @@ function saveQuiz(){
             questions.push({name: question, type: type, answer: answer, choices: choices});            
         }
         else if (type == "select") {
-            let answer = document.getElementById("answer"+(i+1)+"1").value;
+            let answer = document.getElementById("answer"+(id)+"1").value;
             if (answer == "") {
                 mess += "‣ Veuillez entrer une réponse pour la question "+id+"\n";
             }
             let choices = [];
             for (let j = 1; j < 5; j++) {
-                choices.push(document.getElementById("answer"+(i+1)+j).value);
+                choices.push(document.getElementById("answer"+(id)+j).value);
             }
             //randomize the choices order
             choices.sort(() => Math.random() - 0.5);
@@ -667,19 +669,19 @@ function saveQuiz(){
             questions.push({name: question, type: type, answer: answer, choices: choices});
         }
         else if (type == "date" || type == "text") {
-            let answer = document.getElementById("answer"+(i+1)).value;
+            let answer = document.getElementById("answer"+(id)).value;
             if (answer == "") {
                 mess += "‣ Veuillez entrer une réponse pour la question "+id+"\n";
             }
             questions.push({name: question, type: type, answer: answer});
         }
         else if (type == "number") {
-            let answer = document.getElementById("answer"+(i+1)+"1").value;
+            let answer = document.getElementById("answer"+(id)+"1").value;
             if (answer == "") {
                 mess += "‣ Veuillez entrer une réponse pour la question "+id+"\n";
             }
-            let max = document.getElementById("answer"+(i+1)+"2").value;
-            let min = document.getElementById("answer"+(i+1)+"3").value;
+            let max = document.getElementById("answer"+(id)+"2").value;
+            let min = document.getElementById("answer"+(id)+"3").value;
             if (max == "" || min == "") {
                 mess += "‣ Veuillez entrer une valeur maximale et minimale pour la question "+id+"\n";
             }
@@ -697,13 +699,13 @@ function saveQuiz(){
             questions.push({name: question, type: type, answer: answer, min: min, max: max});
         }
         else if (type == "slider") {
-            let answer = document.getElementById("answer"+(i+1)+"1").value;
+            let answer = document.getElementById("answer"+(id)+"1").value;
             if (answer == "") {
                 mess += "‣ Veuillez entrer une réponse pour la question "+id+"\n";
             }
-            let max = document.getElementById("answer"+(i+1)+"2").value;
-            let min = document.getElementById("answer"+(i+1)+"3").value;
-            let step = document.getElementById("answer"+(i+1)+"4").value;
+            let max = document.getElementById("answer"+(id)+"2").value;
+            let min = document.getElementById("answer"+(id)+"3").value;
+            let step = document.getElementById("answer"+(id)+"4").value;
             if (max == "" || min == "" || step == "") {
                 mess += "‣ Veuillez entrer une valeur maximale, minimale et un pas pour la question "+id+"\n";
             }
@@ -717,6 +719,8 @@ function saveQuiz(){
                 min = answer-5;
                 max = answer+5;
             }
+            if (step > (max-min) || step < 0) {
+                step = 1;}
             questions.push({name: question, type: type, answer: answer, min: min, max: max, step: step});
         }
     }
